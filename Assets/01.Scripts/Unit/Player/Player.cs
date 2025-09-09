@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,12 +33,18 @@ public class Player : MonoBehaviour
     private bool isInvincible = false;    // 현재 무적인지 여부
     [SerializeField] private Image hitEffect;
 
-    public Gun[] guns;
+    [Header("Gun")]
+    public List<Gun> guns = new List<Gun>();
     public Transform PistolSkillPos;
     private bool isAttack = true;
     private float time;
     public int cureentGun = 0;
 
+    public List<GameObject> gunPoss;
+    public GameObject curGun;
+
+    [Header("Gun Slot")]
+    [SerializeField] private List<Image> slots;
 
     public Rigidbody2D rb;
     public SpriteRenderer spriteRenderer;
@@ -66,6 +73,10 @@ public class Player : MonoBehaviour
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         curHp = maxHp;
         animator = GetComponent<Animator>();
+        foreach(var slot  in slots)
+        {
+            slot.enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -78,11 +89,23 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.X))
         {
+            if(guns[cureentGun] ==null)
+            {
+                return;
+            }
             guns[cureentGun].Skill();
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.G))
         {
             DropGun();
+        }
+
+        for (int i = 0; i <=guns.Count; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            {
+                ChageSlot(i-1);
+            }
         }
 
     }
@@ -92,6 +115,8 @@ public class Player : MonoBehaviour
         Move();
 
     }
+    #region 이동관련
+
     private void Move()
     {
         if (!isMove) return;
@@ -134,8 +159,14 @@ public class Player : MonoBehaviour
       
     }
 
+    #endregion
+
     private IEnumerator Attack()
     {
+        if (guns[cureentGun] == null)
+        {
+            yield return 0 ;
+        }
         float time = guns[cureentGun].attackSpeed;
         isAttack = false;
         guns[cureentGun].Fire();
@@ -168,23 +199,51 @@ public class Player : MonoBehaviour
         isInvincible = true;
         float elapsed = 0f;
 
+        SpriteRenderer gunSprite = null;
+
+        if (guns != null && cureentGun < guns.Count && guns[cureentGun] != null)
+        {
+            gunSprite = guns[cureentGun].GetComponent<SpriteRenderer>();
+        }
+
         while (elapsed < invincibleTime)
         {
-            spriteRenderer.enabled = false; // 스프라이트 끄기
-            guns[cureentGun].GetComponent<SpriteRenderer>().enabled = false;
+            // 본체 스프라이트 끄기
+            spriteRenderer.enabled = false;
+
+            // 총 스프라이트가 있으면 끄기
+            if (gunSprite != null)
+            {
+                gunSprite.enabled = false;
+            }
+
             yield return new WaitForSeconds(blinkInterval / 2);
 
-            spriteRenderer.enabled = true; // 스프라이트 켜기
-            guns[cureentGun].GetComponent<SpriteRenderer>().enabled = true;
+            // 본체 스프라이트 켜기
+            spriteRenderer.enabled = true;
+
+            // 총 스프라이트 있으면 켜기
+            if (gunSprite != null)
+            {
+                gunSprite.enabled = true;
+            }
+
             yield return new WaitForSeconds(blinkInterval / 2);
 
             elapsed += blinkInterval;
         }
 
-        isInvincible = false; // 무적 해제
-        spriteRenderer.enabled = true; // 반드시 켜놓기
-        guns[cureentGun].GetComponent<SpriteRenderer>().enabled = true;
+        // 무적 해제
+        isInvincible = false;
+
+        // 최종적으로 반드시 켜놓기
+        if (gunSprite != null)
+        {
+            gunSprite.enabled = true;
+        }
+        spriteRenderer.enabled = true;
     }
+
 
     private IEnumerator HitEffect()
     {
@@ -215,12 +274,70 @@ public class Player : MonoBehaviour
         Debug.Log("플레이어 죽음");
     }
 
+    private void ChageSlot(int _n)
+    {
+        if (_n < 0 || _n >= guns.Count) return;
+        if (_n == cureentGun) return;
+
+        if (guns[cureentGun] != null)
+            guns[cureentGun].gameObject.SetActive(false);
+
+        cureentGun = _n;
+        if (guns[cureentGun] != null)
+        {
+            curGun = guns[cureentGun].gameObject;
+            curGun.SetActive(true);
+            curGun.transform.SetParent(transform);
+            curGun.transform.position = gunPoss[0].transform.position;
+            guns[cureentGun].holding = true;
+            slots[cureentGun].sprite = guns[cureentGun].spriteRenderer.sprite;
+            slots[cureentGun].enabled = true;
+        }
+    }
+
+
+
+
     private void DropGun()
     {
         guns[cureentGun].holding = false;
         guns[cureentGun].transform.SetParent(null);
+        guns.Remove(guns[cureentGun]);
 
     }
+
+    private void PickGun(Gun _gun)
+    {
+        if (guns == null)
+            guns = new List<Gun>();
+
+        if (guns.Count == 0)
+        {
+            Debug.Log("총이 아예 없을 경우");
+            guns.Add(_gun);
+            cureentGun = 0;
+        }
+        else
+        {
+            Debug.Log("총이 있을 경우");
+            if (cureentGun < guns.Count)
+            {
+                guns[cureentGun] = _gun; // 현재 장비한 총 교체
+            }
+            else
+            {
+                guns.Add(_gun);
+                cureentGun = guns.Count - 1;
+            }
+        }
+
+        guns[cureentGun].transform.SetParent(gameObject.transform);
+        guns[cureentGun].transform.position = gunPoss[0].transform.position;
+        guns[cureentGun].holding = true;
+        slots[cureentGun].sprite = _gun.spriteRenderer.sprite;
+        slots[cureentGun].enabled = true;
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -228,5 +345,21 @@ public class Player : MonoBehaviour
         {
             isJump=true;
         }
+      
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Pick"))
+        {
+            Debug.Log("Pick범위 안");
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Gun pickGun = collision.GetComponentInParent<Gun>();
+                Debug.Log(pickGun);
+                PickGun(pickGun);
+            }
+        }
+    }
+  
 }
