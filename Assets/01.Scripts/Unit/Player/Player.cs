@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float decceleration = 40f;
     [SerializeField] private float velPower = 0.9f;
     [SerializeField] private float maxSpeed = 13f;
+    public bool isMove = true;
+    public bool isKonBack = false;
 
     [Header("Jump")]
     [SerializeField] private float jumpPower = 6f;
@@ -31,12 +33,13 @@ public class Player : MonoBehaviour
     [SerializeField] private Image hitEffect;
 
     public Gun[] guns;
+    public Transform PistolSkillPos;
     private bool isAttack = true;
     private float time;
     private int cureentGun = 0;
 
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     public SpriteRenderer spriteRenderer;
     private Animator animator;
 
@@ -62,6 +65,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         curHp = maxHp;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -72,7 +76,10 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Attack());
         }
-
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            guns[cureentGun].Skill();
+        }
         guns[cureentGun].gameObject.GetComponent<SpriteRenderer>().flipX = spriteRenderer.flipX ? false : true;
     }
 
@@ -83,6 +90,7 @@ public class Player : MonoBehaviour
     }
     private void Move()
     {
+        if (!isMove) return;
         float x = Input.GetAxisRaw("Horizontal");
 
         if (x != 0)
@@ -188,6 +196,14 @@ public class Player : MonoBehaviour
             yield return null;
         }
 
+    }
+
+    public void AnSkill(int _n)
+    {
+        if(_n == 0)
+        {
+            animator.SetTrigger("PistolSkill");
+        }
     }
 
     private void Die()

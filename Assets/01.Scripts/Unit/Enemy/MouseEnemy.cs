@@ -129,15 +129,18 @@ public class MouseEnemy : BaseEnemy
     protected override IEnumerator KnockBack()
     {
         animator.SetInteger("state", 0);
-
-        Vector3 playerPos = target.transform.position;
-        Vector3 dirVec = (transform.position - playerPos);
-        dirVec.y = 0;
-        rb.AddForce(dirVec.normalized * 3f, ForceMode2D.Impulse);
-        isMove = false;
-        yield return wait;
-        isMove = true;
-        Debug.Log("³Ë¹é");
+        if (target != null)
+        {
+            Vector3 playerPos = target.transform.position;
+            Vector3 dirVec = (transform.position - playerPos);
+            dirVec.y = 0;
+            rb.AddForce(dirVec.normalized * 3f, ForceMode2D.Impulse);
+            isMove = false;
+            yield return wait;
+            isMove = true;
+            Debug.Log("³Ë¹é");
+        }
+       
     }
 
     public override void Die()

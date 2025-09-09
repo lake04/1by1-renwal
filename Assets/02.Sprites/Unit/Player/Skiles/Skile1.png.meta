@@ -34,21 +34,21 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 40
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,7 +121,322 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Skile1_0
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 4
+        width: 45
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e677efb6c2bc1614d9ba92206bfa1f20
+      internalID: -193719275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_1
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 4
+        width: 51
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 345f23bdb19c0ef458dd9b301d665be2
+      internalID: -1291226652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_2
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 4
+        width: 138
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 998ab2965bb753545a5bf21ce848f40e
+      internalID: 843710111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_4
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 4
+        width: 117
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc828a17a42d901458e8214fe6a7e06d
+      internalID: 1482294682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_6
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 4
+        width: 125
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fde3d1d1e6aeed4783d9ac52770626e
+      internalID: 1674810589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_8
+      rect:
+        serializedVersion: 2
+        x: 833
+        y: 4
+        width: 123
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4698890348309e74fb535a3309cad879
+      internalID: -2008525517
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_10
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 4
+        width: 132
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8eb791a954a356a48a86db5d0d5b5cd5
+      internalID: -1702763939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_12
+      rect:
+        serializedVersion: 2
+        x: 1153
+        y: 4
+        width: 115
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c090cefbb453a424789f7c3217fa77d1
+      internalID: -1156944755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_14
+      rect:
+        serializedVersion: 2
+        x: 1307
+        y: 4
+        width: 131
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbf8a22fb43fb054391e10a27cea60dd
+      internalID: -1995964638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_16
+      rect:
+        serializedVersion: 2
+        x: 1473
+        y: 4
+        width: 117
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 539543f36141d144fbf9f44b965f85a4
+      internalID: -2134094179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_18
+      rect:
+        serializedVersion: 2
+        x: 1628
+        y: 4
+        width: 128
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef8b5419405eb7d4892e90b5854c096f
+      internalID: 1443482146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_20
+      rect:
+        serializedVersion: 2
+        x: 1793
+        y: 4
+        width: 119
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4302a1a66343699459b5c0ba50293934
+      internalID: -967399818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_22
+      rect:
+        serializedVersion: 2
+        x: 1948
+        y: 4
+        width: 127
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73f7fa5c4dd86f949a9a1968335f391b
+      internalID: 1681812161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_24
+      rect:
+        serializedVersion: 2
+        x: 2116
+        y: 4
+        width: 52
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae5de9882ef476b4da52317540d37e6a
+      internalID: -420223923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Skile1_25
+      rect:
+        serializedVersion: 2
+        x: 2276
+        y: 4
+        width: 44
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 103d0e954c7de8c479edfc01d4693165
+      internalID: -775509129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +447,51 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Skile1_0: -193719275
+      Skile1_1: -1291226652
+      Skile1_10: -1702763939
+      Skile1_11: -926196246
+      Skile1_12: -1156944755
+      Skile1_13: -2114970304
+      Skile1_14: -1995964638
+      Skile1_15: 281233555
+      Skile1_16: -2134094179
+      Skile1_17: 456346939
+      Skile1_18: 1443482146
+      Skile1_19: -1105638456
+      Skile1_2: 843710111
+      Skile1_20: -967399818
+      Skile1_21: 320029414
+      Skile1_22: 1681812161
+      Skile1_23: -327695397
+      Skile1_24: -420223923
+      Skile1_25: -775509129
+      Skile1_26: 689392512
+      Skile1_27: 1517955999
+      Skile1_28: 619389951
+      Skile1_29: 275800552
+      Skile1_3: 1557377774
+      Skile1_30: 865420275
+      Skile1_31: -1971417712
+      Skile1_32: -2026051196
+      Skile1_33: -730258901
+      Skile1_34: -411368163
+      Skile1_35: -206171694
+      Skile1_36: -1292972416
+      Skile1_37: 1817737251
+      Skile1_38: 1177576459
+      Skile1_39: 1508413679
+      Skile1_4: 1482294682
+      Skile1_40: 350397804
+      Skile1_41: -964466466
+      Skile1_42: -1191499327
+      Skile1_43: 1557912501
+      Skile1_5: -1300664458
+      Skile1_6: 1674810589
+      Skile1_7: 1639686673
+      Skile1_8: -2008525517
+      Skile1_9: 1990102460
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

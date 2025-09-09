@@ -24,6 +24,11 @@ public class BaseEnemy : MonoBehaviour
     public WaitForFixedUpdate wait;
     public Transform target;
 
+    public float invincibleTime = 1.5f;     // 무적 유지 시간
+    public float blinkInterval = 0.6f;    // 깜빡임 간격
+
+
+
     void Start()
     {
         Init();
@@ -145,6 +150,7 @@ public class BaseEnemy : MonoBehaviour
     {
         curHp-=damage;
         StartCoroutine(this.KnockBack());
+        StartCoroutine(InvincibleBlink());
         Debug.Log("피격 당함");
 
         if (curHp<=0)
@@ -152,18 +158,37 @@ public class BaseEnemy : MonoBehaviour
             Die();
         }
     }
+    private IEnumerator InvincibleBlink()
+    {
+        float elapsed = 0f;
 
+        while (elapsed < invincibleTime)
+        {
+            spriteRenderer.enabled = false; // 스프라이트 끄기
+            yield return new WaitForSeconds(blinkInterval / 2);
+
+            spriteRenderer.enabled = true; // 스프라이트 켜기
+            yield return new WaitForSeconds(blinkInterval / 2);
+
+            elapsed += blinkInterval;
+        }
+
+        spriteRenderer.enabled = true; // 반드시 켜놓기
+    }
     protected virtual IEnumerator KnockBack()
     {
-        Vector3 playerPos = target.transform.position;
-        Vector3 dirVec = (transform.position - playerPos);
-        dirVec.y = 0;
-        rb.AddForce(dirVec.normalized * 4.5f, ForceMode2D.Impulse);
-        isMove = false;
-        yield return wait;
-        isMove = true;
+        if (target != null)
+        {
+            Vector3 playerPos = target.transform.position;
+            Vector3 dirVec = (transform.position - playerPos);
+            dirVec.y = 0;
+            rb.AddForce(dirVec.normalized * 3f, ForceMode2D.Impulse);
+            isMove = false;
+            yield return wait;
+            isMove = true;
+            Debug.Log("넉백");
+        }
 
-        Debug.Log("넉백");
     }
 
     private IEnumerator BurnEffect()
