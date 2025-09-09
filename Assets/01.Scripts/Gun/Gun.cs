@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UI;
 
 public enum Element
 {
@@ -25,6 +25,9 @@ public class Gun : MonoBehaviour
     public Element element = Element.None;
     public GunKind gunKind;
 
+    public bool holding = false;
+
+
     public float damage;
     public int per; //관통력
     public float attackSpeed;
@@ -32,7 +35,8 @@ public class Gun : MonoBehaviour
     public int ammo; //총 발사시 나오는 총알 개수
 
     public Transform bulletPos;
-    public FireEffct fireEffect;
+    public FireEffct leftFireEffect;
+    public FireEffct rightFireEffect;
 
     public bool isSkill = true;
     public bool skilling;
@@ -40,7 +44,19 @@ public class Gun : MonoBehaviour
 
     public Transform PistolSkillPos;
 
+    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer playerSpriteRenderer;
+    private bool isCooldown = false;
+    public float cooldownTime = 5f;
+    public float cooldownTimer = 0f;
+    [SerializeField] private GameObject slider;
 
+
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
@@ -50,22 +66,32 @@ public class Gun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (holding == false)
+            return;
+        spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX ? false : true;
+        CoolTime();
     }
 
     public void Fire()
     {
-        fireEffect.FireAnim();
+        SpriteRenderer spriteRenderer = Player.Instance.spriteRenderer;
+
+        if (spriteRenderer.flipX)
+        {
+            rightFireEffect.FireAnim();
+        }
+        else
+        {
+            leftFireEffect.FireAnim();
+        }
         GameObject bullet = Instantiate(BulletManager.instance.GetBullet((int)element), bulletPos);
 
-        SpriteRenderer spriteRenderer = Player.Instance.spriteRenderer;
 
         Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
 
         bullet.GetComponent<Bullet>().Init(damage,per, dir);
         //Debug.Log("공격중");
     }
-
   
 
     public void Skill()
@@ -91,6 +117,7 @@ public class Gun : MonoBehaviour
     private IEnumerator PistolSkill()
     {
         Debug.Log("피스톨 스킬 발동중");
+
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         Player.Instance.AnSkill(0);
         skilling = true;
@@ -113,9 +140,27 @@ public class Gun : MonoBehaviour
         isSkill = true;
         skilling = false;
         Player.Instance.isMove = true;
+        isCooldown = true;
+        cooldownTimer = cooldownTime;
     }
 
-    protected virtual IEnumerator KnockBack()
+    private void CoolTime()
+    {
+        if (isCooldown)
+        {
+            slider.SetActive(true);
+            cooldownTimer -= Time.deltaTime;
+            isSkill = false ;
+            if (cooldownTimer <= 0f)
+            {
+                isCooldown = false;
+                slider.SetActive(false);
+                isSkill = true;
+            }
+        }
+    }
+
+    private  IEnumerator KnockBack()
     {
         if(!Player.Instance.isKonBack)
         {

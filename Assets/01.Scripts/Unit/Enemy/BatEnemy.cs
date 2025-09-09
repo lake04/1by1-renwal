@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BatEnemy : BaseEnemy
 {
@@ -8,6 +9,8 @@ public class BatEnemy : BaseEnemy
     [SerializeField] private GameObject attackObject;
     [SerializeField] private Transform leftAttackObjectPos;
     [SerializeField] private Transform rigthAttackObjectPos;
+
+
 
     private void Awake()
     {

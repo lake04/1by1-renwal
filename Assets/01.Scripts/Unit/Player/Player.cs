@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     public Transform PistolSkillPos;
     private bool isAttack = true;
     private float time;
-    private int cureentGun = 0;
+    public int cureentGun = 0;
 
 
     public Rigidbody2D rb;
@@ -72,15 +72,19 @@ public class Player : MonoBehaviour
     void Update()
     {
         Jump();
-        if(Input.GetMouseButtonDown(0) & isAttack)
+        if(Input.GetKeyDown(KeyCode.C) & isAttack)
         {
             StartCoroutine(Attack());
         }
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.X))
         {
             guns[cureentGun].Skill();
         }
-        guns[cureentGun].gameObject.GetComponent<SpriteRenderer>().flipX = spriteRenderer.flipX ? false : true;
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            DropGun();
+        }
+
     }
 
     private void FixedUpdate()
@@ -209,6 +213,13 @@ public class Player : MonoBehaviour
     private void Die()
     {
         Debug.Log("플레이어 죽음");
+    }
+
+    private void DropGun()
+    {
+        guns[cureentGun].holding = false;
+        guns[cureentGun].transform.SetParent(null);
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

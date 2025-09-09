@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Time, Health }
+    public enum InfoType { Skill, Level, Kill, Time, Health}
     public InfoType type;
 
     Text myText;
@@ -25,6 +25,13 @@ public class HUD : MonoBehaviour
                 float curHp = Player.Instance.CurHp;
                 float maxHp = Player.Instance.MaxHp;
                 mySlider.value = curHp / maxHp;
+                break;
+                case InfoType.Skill:
+                float curTime = Player.Instance.guns[Player.Instance.cureentGun].cooldownTimer; 
+                float maxTime = Player.Instance.guns[Player.Instance.cureentGun].cooldownTime; 
+                mySlider.value = curTime / maxTime;
+                break;
+
                 break;
             case InfoType.Kill:
                 //myText.text = string.Format("{0:F0}", GameManager.Instance.kill);
