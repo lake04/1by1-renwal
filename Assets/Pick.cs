@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pick : MonoBehaviour
 {
-    [SerializeField] private GameObject keyImg;
+    [SerializeField] public GameObject keyImg;
 
     private void OnEnable()
     {
@@ -17,7 +17,11 @@ public class Pick : MonoBehaviour
 
     void Update()
     {
-        
+        Gun gun = gameObject.GetComponentInParent<Gun>();
+        if(gun.holding == true)
+        {
+            keyImg.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

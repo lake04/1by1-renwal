@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: 4d6e3e20d8cf089469e7765d1fc64cdb
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 20
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GabrielDie_5
+      rect:
+        serializedVersion: 2
+        x: 624
+        y: 60
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98e3323c440fe2a4d81d143f430375e5
+      internalID: -738580092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_6
+      rect:
+        serializedVersion: 2
+        x: 744
+        y: 60
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: afbbbfd0da904a4469db6689eebff24a
+      internalID: 419763119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_7
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 60
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db76caa45082b3b40bc493a15a3cf952
+      internalID: 1069984649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_8
+      rect:
+        serializedVersion: 2
+        x: 984
+        y: 60
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2da4199e7f489da408c348fc5ab21070
+      internalID: -517831104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_9
+      rect:
+        serializedVersion: 2
+        x: 1080
+        y: 60
+        width: 113
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8dcce9f7f4e70247b34594b057f3271
+      internalID: 1548477608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_10
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 60
+        width: 112
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e87b0f7266ead144bade613a25e14596
+      internalID: 693638061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_11
+      rect:
+        serializedVersion: 2
+        x: 1318
+        y: 48
+        width: 120
+        height: 117
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d3ba4bb4a1900c43b8f12e73247a9b6
+      internalID: -461038761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_12
+      rect:
+        serializedVersion: 2
+        x: 1439
+        y: 45
+        width: 127
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91936b33fee48ea4388538eef4370b45
+      internalID: 2084813026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_13
+      rect:
+        serializedVersion: 2
+        x: 1568
+        y: 35
+        width: 129
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b21fe81e286b8cd49a9e710197e93a88
+      internalID: -1893460583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_14
+      rect:
+        serializedVersion: 2
+        x: 1706
+        y: 31
+        width: 104
+        height: 134
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9659bd0e3b827c44f8950c953cb9f3a8
+      internalID: -1796745618
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_4
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 37
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7995f1c845d554545b0ff83ef3d856cc
+      internalID: -169730127
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_3
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 21
+        width: 89
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88909f6e171189b49ba644ef8ab31819
+      internalID: 1009715300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_0
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 7
+        width: 101
+        height: 107
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f83705ec155ea32439773a70ef5ac3a4
+      internalID: 1412091867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_1
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 8
+        width: 98
+        height: 106
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c1df45fee7fd4c49b427e241021dbc0
+      internalID: -314720094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_2
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 3
+        width: 101
+        height: 105
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bc0779662bfc5b3499fd1286cebfa59e
+      internalID: 686376876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GabrielDie_15
+      rect:
+        serializedVersion: 2
+        x: 1814
+        y: 9
+        width: 209
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f3331465c22cd4981ea86deb92d270
+      internalID: -766692709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      GabrielDie_0: 1412091867
+      GabrielDie_1: -314720094
+      GabrielDie_10: 693638061
+      GabrielDie_11: -461038761
+      GabrielDie_12: 2084813026
+      GabrielDie_13: -1893460583
+      GabrielDie_14: -1796745618
+      GabrielDie_15: -766692709
+      GabrielDie_16: -1278341430
+      GabrielDie_17: 855934428
+      GabrielDie_18: 1643021499
+      GabrielDie_19: 1587477978
+      GabrielDie_2: 686376876
+      GabrielDie_20: 48364530
+      GabrielDie_21: 36860229
+      GabrielDie_22: 1467521060
+      GabrielDie_23: -648674234
+      GabrielDie_25: -1241230120
+      GabrielDie_26: -279636793
+      GabrielDie_27: -1918657146
+      GabrielDie_28: 113977173
+      GabrielDie_29: -1403476898
+      GabrielDie_3: 1009715300
+      GabrielDie_30: 2115340112
+      GabrielDie_31: -1091242242
+      GabrielDie_32: 135620157
+      GabrielDie_33: -1445668465
+      GabrielDie_37: 415216663
+      GabrielDie_38: 1348075516
+      GabrielDie_4: -169730127
+      GabrielDie_40: -1050294712
+      GabrielDie_41: -1597840048
+      GabrielDie_42: -456045486
+      GabrielDie_44: -1390675738
+      GabrielDie_45: -2147278779
+      GabrielDie_46: 605515631
+      GabrielDie_47: -1379062896
+      GabrielDie_48: -1173576434
+      GabrielDie_49: 1262820785
+      GabrielDie_5: -738580092
+      GabrielDie_50: 1083765700
+      GabrielDie_51: -1443472857
+      GabrielDie_52: -1509402839
+      GabrielDie_54: -576823176
+      GabrielDie_55: 480547565
+      GabrielDie_56: -1583503730
+      GabrielDie_57: -614573865
+      GabrielDie_58: -2054507207
+      GabrielDie_59: 1024709443
+      GabrielDie_6: 419763119
+      GabrielDie_60: -857596444
+      GabrielDie_61: -1768622400
+      GabrielDie_62: -811603504
+      GabrielDie_63: -312315775
+      GabrielDie_64: -1222661840
+      GabrielDie_65: 920357181
+      GabrielDie_66: -1980824371
+      GabrielDie_67: 1237611404
+      GabrielDie_68: -1020106048
+      GabrielDie_69: -590131032
+      GabrielDie_7: 1069984649
+      GabrielDie_70: 34726121
+      GabrielDie_71: 883747966
+      GabrielDie_72: 1891604288
+      GabrielDie_73: 1360083901
+      GabrielDie_74: -619603022
+      GabrielDie_75: -1868335350
+      GabrielDie_76: 834033005
+      GabrielDie_8: -517831104
+      GabrielDie_9: 1548477608
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

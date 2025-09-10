@@ -26,16 +26,25 @@ public class HUD : MonoBehaviour
                 float maxHp = Player.Instance.MaxHp;
                 mySlider.value = curHp / maxHp;
                 break;
-                case InfoType.Skill:
-                float curTime = Player.Instance.guns[Player.Instance.currentGun].cooldownTimer; 
-                float maxTime = Player.Instance.guns[Player.Instance.currentGun].cooldownTime; 
-                mySlider.value = curTime / maxTime;
-                break;
+            case InfoType.Skill:
+                // 현재 들고 있는 총
+                Gun currentGun = Player.Instance.guns[Player.Instance.currentGun];
 
+                // Player 스크립트의 쿨타임 딕셔너리에서 정보 가져오기
+                if (Player.Instance.gunCooldowns.ContainsKey(currentGun))
+                {
+                    // 쿨타임 진행 중
+                    float curTime = Player.Instance.gunCooldowns[currentGun];
+                    float maxTime = currentGun.cooldownTime;
+                    mySlider.value = 1 - (curTime / maxTime); // 쿨타임이 0이 될 때 슬라이더가 1이 되도록
+                }
+                else
+                {
+                    // 쿨타임이 아닐 때
+                    mySlider.value = 1;
+                }
                 break;
-            case InfoType.Kill:
-                //myText.text = string.Format("{0:F0}", GameManager.Instance.kill);
-                break;
+     
         }
     }
 

@@ -26,6 +26,8 @@ public class MouseEnemy : BaseEnemy
 
     public void FixedUpdate()
     {
+        if (!isLive)
+            return;
         this.Move();
     }
 
@@ -145,6 +147,7 @@ public class MouseEnemy : BaseEnemy
 
     public override void Die()
     {
+        isLive = true;
         animator.SetTrigger("Die");
     }
 

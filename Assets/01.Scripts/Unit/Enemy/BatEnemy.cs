@@ -11,7 +11,6 @@ public class BatEnemy : BaseEnemy
     [SerializeField] private Transform rigthAttackObjectPos;
 
 
-
     private void Awake()
     {
         Init();

@@ -27,6 +27,7 @@ public class BaseEnemy : MonoBehaviour
     public float invincibleTime = 1.5f;     // 무적 유지 시간
     public float blinkInterval = 0.6f;    // 깜빡임 간격
 
+    [SerializeField] protected bool isLive = false;
 
 
     void Start()
@@ -49,6 +50,8 @@ public class BaseEnemy : MonoBehaviour
 
     public void FixedUpdate()
     {
+        if(!isLive)
+            return;
         Move();
     }
 
@@ -235,6 +238,7 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void Die()
     {
+        isLive = true;
         Destroy(gameObject);
     }
 

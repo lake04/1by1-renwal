@@ -49,7 +49,6 @@ public class Gun : MonoBehaviour
     private bool isCooldown = false;
     public float cooldownTime = 5f;
     public float cooldownTimer = 0f;
-    [SerializeField] private GameObject slider;
 
 
 
@@ -69,7 +68,6 @@ public class Gun : MonoBehaviour
         if (holding == false)
             return;
         spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX ? false : true;
-        CoolTime();
     }
 
     public void Fire()
@@ -136,29 +134,17 @@ public class Gun : MonoBehaviour
             StartCoroutine(KnockBack());
             yield return new WaitForSeconds(0.2f);
         }
+        Player.Instance.StartCooldown(this); // this는 현재 Gun 객체를 의미합니다.
+
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
         isSkill = true;
         skilling = false;
         Player.Instance.isMove = true;
-        isCooldown = true;
-        cooldownTimer = cooldownTime;
     }
 
-    private void CoolTime()
-    {
-        if (isCooldown)
-        {
-            slider.SetActive(true);
-            cooldownTimer -= Time.deltaTime;
-            isSkill = false ;
-            if (cooldownTimer <= 0f)
-            {
-                isCooldown = false;
-                slider.SetActive(false);
-                isSkill = true;
-            }
-        }
-    }
+
+
+
 
     private  IEnumerator KnockBack()
     {

@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public static Player Instance;
 
     [Header("Movement")]
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] public float moveSpeed = 5f;
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float decceleration = 40f;
     [SerializeField] private float velPower = 0.9f;
@@ -45,6 +45,11 @@ public class Player : MonoBehaviour
 
     public List<GameObject> gunPoss;
     public GameObject curGun;
+
+    public Dictionary<Gun, float> gunCooldowns = new Dictionary<Gun, float>();
+
+    private bool canPickUpGun = false;
+    private Gun nearbyGun;
 
     [Header("Gun Slot")]
     [SerializeField] private List<Image> slots;
@@ -119,15 +124,20 @@ public class Player : MonoBehaviour
         {
             DropGun();
         }
+        if (canPickUpGun && Input.GetKeyDown(KeyCode.F))
+        {
+            PickGun(nearbyGun);
+        }
+
 
         for (int i = 0; i <=guns.Count; i++)
         {
-            if (Input.GetKeyDown(KeyCode.Alpha0 + i))
+            if (Input.GetKeyDown(KeyCode.Alpha0 + i) && guns[currentGun].skilling == false)
             {
                 ChageSlot(i-1);
             }
         }
-
+        UpdateCooldowns();
     }
 
     private void FixedUpdate()
@@ -142,45 +152,56 @@ public class Player : MonoBehaviour
         if (!isMove) return;
 
         float x = Input.GetAxisRaw("Horizontal");
-
         if (x != 0)
             spriteRenderer.flipX = x < 0;
 
-        float targetSpeed = x * maxSpeed;
-
+        float targetSpeed = x * moveSpeed;
         float speedDiff = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
 
-        float movement = speedDiff * accelRate;
-        //followCamaer.followSpeed = followCamaer.originFollowSpeed + movement * 0.75f;
-        rb.AddForce(Vector2.right * movement);
+        // Lerp 함수를 사용하여 속도를 목표 속도에 맞추기
+        // Time.fixedDeltaTime을 곱하여 FixedUpdate에서 프레임 독립적으로 작동하게 함
+        float newVelocityX = Mathf.Lerp(rb.velocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
+        rb.velocity = new Vector2(newVelocityX, rb.velocity.y);
 
+        // 최대 속도 제한
         if (Mathf.Abs(rb.velocity.x) > maxSpeed)
         {
             rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
         }
+
     }
 
     private void Jump()
     {
-       if(jumpBufferCounter > 0f && isJump)
+        if (jumpBufferCounter > 0f && isJump)
         {
             isJump = false;
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             jumpBufferCounter = 0f;
         }
 
-       if(rb.velocity.y > 0)
+        //// 점프 키를 떼면 점프를 끊는 기능 (점프 높이 조절)
+        //// 이 로직을 사용하면 점프 키를 짧게 누르면 낮게, 길게 누르면 높게 점프 가능
+        //if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        //{
+        //    // Vector2.up * Physics2D.gravity.y * 1.5f 같은 값으로 부드럽게 속도 줄이기
+        //    rb.velocity += Vector2.up * Physics2D.gravity.y * 1.5f * Time.deltaTime;
+        //}
+
+        // 상승 속도 배율
+        else if (rb.velocity.y > 0)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * (riseMultiplier - 1) * Time.deltaTime;
         }
-       else if(rb.velocity.y < 0)
+        // 하강 속도 배율
+        else if (rb.velocity.y < 0)
         {
-            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime; 
+            rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
-    }
 
+    }
 
     #endregion
 
@@ -198,6 +219,35 @@ public class Player : MonoBehaviour
         isAttack = true;
 
 
+    }
+
+    public void StartCooldown(Gun gun)
+    {
+        if (gun != null)
+        {
+            // 딕셔너리에 쿨타임 정보 추가 또는 업데이트
+            gunCooldowns[gun] = gun.cooldownTime;
+        }
+    }
+
+    private void UpdateCooldowns()
+    {
+        List<Gun> gunsToUpdate = new List<Gun>(gunCooldowns.Keys);
+        foreach (var gun in gunsToUpdate)
+        {
+            if (gunCooldowns.ContainsKey(gun))
+            {
+                gun.isSkill = false;
+                gunCooldowns[gun] -= Time.deltaTime;
+
+                if (gunCooldowns[gun] <= 0)
+                {
+                    gun.isSkill = true;
+
+                    gunCooldowns.Remove(gun);
+                }
+            }
+        }
     }
 
     public void TakeDamage(float damage)
@@ -317,6 +367,7 @@ public class Player : MonoBehaviour
             curGun.SetActive(true);
             curGun.transform.SetParent(gameObject.transform);
             curGun.transform.position = gunPoss[0].transform.position;
+
             guns[currentGun].holding = true;
             slots[currentGun].sprite = guns[currentGun].spriteRenderer.sprite;
             slots[currentGun].enabled = true;
@@ -393,7 +444,6 @@ public class Player : MonoBehaviour
         // Collider 꺼주기
         Collider2D col = _gun.GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
-
         // 위치/부모 고정
         _gun.transform.SetParent(gunPoss[0].transform);
         _gun.transform.localPosition = Vector3.zero;
@@ -420,15 +470,21 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("Pick"))
         {
-            Debug.Log("Pick범위 안");
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Gun pickGun = collision.GetComponentInParent<Gun>();
-                Debug.Log(pickGun);
-                PickGun(pickGun);
-                collision.gameObject.SetActive(false);
-            }
+            canPickUpGun = true;
+            Gun pickGun = collision.GetComponentInParent<Gun>();
+            nearbyGun = pickGun;
+            
         }
     }
-  
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Pick"))
+        {
+            canPickUpGun = false;
+            nearbyGun = null;
+            Debug.Log("Pick 범위 밖");
+        }
+    }
+
 }

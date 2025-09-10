@@ -10,16 +10,23 @@ public class CameraController : MonoBehaviour
     [Header("카메라 추적 설정")]
     public Transform target; // 추적할 타겟 (주로 플레이어)
     public Vector3 offset;   // 타겟으로부터의 상대적 위치
-    public float smoothSpeed = 0.125f; // 부드러운 움직임의 속도
+    // smoothSpeed를 0에 가까운 작은 값으로 설정하면 더 부드러워집니다.
+    [SerializeField] private float smoothSpeed = 0.125f;
+    public float baseSmoothSpeed = 0.125f; // 기본 속도
+    public float speedMultiplier = 0.05f;  // 속도에 따른 가중치
 
     [Header("카메라 위치 제한")]
-    public float minX;
-    public float maxX;
-    public float minY;
-    public float maxY;
+    [Header("Camer Area")]
+    [SerializeField] private float minX;
+    [SerializeField] private float maxX;
+    [SerializeField] private float minY;
+    [SerializeField] private float maxY;
+
+    private Camera cam;
 
     [Header("카메라 흔들림")]
     private Vector3 shakeOffset = Vector3.zero; // 흔들림에 의해 추가될 오프셋
+    private Vector3 currentVelocity = Vector3.zero; // SmoothDamp를 위한 변수
 
     private void Awake()
     {
@@ -32,32 +39,50 @@ public class CameraController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        cam = Camera.main;
+    }
+
+    private void FixedUpdate()
+    {
+        if (target != null)
+        {
+            // 플레이어의 실제 속도를 가져옵니다.
+            // Rigidbody2D.velocity는 Vector2이므로, x 값만 사용합니다.
+            float playerCurrentSpeed = Mathf.Abs(Player.Instance.rb.velocity.x);
+
+            // 플레이어의 실제 속도에 따라 카메라 속도를 동적으로 조절합니다.
+            // 속도에 따라 부드러움(smoothSpeed)이 달라지게 됩니다.
+            // baseSmoothSpeed: 최소한의 부드러움 (플레이어가 멈췄을 때)
+            // speedMultiplier: 속도가 증가할수록 부드러움이 얼마나 줄어들지 조절
+            float dynamicSmoothTime = baseSmoothSpeed / (1 + playerCurrentSpeed * speedMultiplier);
+
+            // 목표 위치 계산 (타겟 위치 + 오프셋)
+            Vector3 desiredPosition = target.position + offset;
+            Vector3 smoothedPosition = Vector3.SmoothDamp(
+                transform.position,
+                desiredPosition,
+                ref currentVelocity,
+                dynamicSmoothTime // 동적으로 계산된 부드러움 값을 사용
+            );
+
+            // 카메라 영역 제한
+            float camHeight = cam.orthographicSize;
+            float camWidth = camHeight * cam.aspect;
+
+            float clampedX = Mathf.Clamp(smoothedPosition.x, minX + camWidth, maxX - camWidth);
+            float clampedY = Mathf.Clamp(smoothedPosition.y, minY + camHeight, maxY - camHeight);
+
+            // 최종 위치 설정 (제한된 위치 + 흔들림 오프셋)
+            transform.position = new Vector3(clampedX, clampedY, transform.position.z) + shakeOffset;
+        }
     }
 
     private void LateUpdate()
     {
-        if (target == null) return;
-
-        // 1. 타겟을 따라가는 기본 위치 계산
-        Vector3 desiredPosition = target.position + offset;
-
-        // 2. 부드러운 이동을 위한 보간
-        Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-
-        // 3. 계산된 위치에 카메라 제한 적용
-        float clampedX = Mathf.Clamp(smoothedPosition.x, minX, maxX);
-        float clampedY = Mathf.Clamp(smoothedPosition.y, minY, maxY);
-        Vector3 clampedPosition = new Vector3(clampedX, clampedY, smoothedPosition.z);
-
-        // 4. 흔들림 오프셋을 최종 위치에 더함
-        // 흔들림 코루틴이 동작 중일 때만 shakeOffset이 적용됨
-        Vector3 finalPosition = clampedPosition + shakeOffset;
-
-        // 5. 카메라 위치 업데이트
-        transform.position = finalPosition;
+     
     }
 
-    // 외부에서 호출하여 카메라를 흔드는 함수
+    // 이하 Shake, OnDrawGizmos 메서드는 그대로 사용 가능
     public void Shake(float duration, float magnitude)
     {
         StartCoroutine(DoShake(duration, magnitude));
@@ -84,7 +109,6 @@ public class CameraController : MonoBehaviour
         shakeOffset = Vector3.zero;
     }
 
-    // 에디터에서 카메라 제한 영역을 시각적으로 표시
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

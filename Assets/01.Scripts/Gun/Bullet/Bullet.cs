@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] GameObject effect;
 
     private Vector3 startPos;
-    private float maxDistanc = 10f;
+    private float maxDistanc = 20f;
 
     private Rigidbody2D rb;
 
