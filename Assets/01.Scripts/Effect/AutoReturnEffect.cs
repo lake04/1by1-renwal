@@ -15,10 +15,7 @@ public class AutoReturnEffect : MonoBehaviour
 
     void ReturnToPool()
     {
-        if (gameObject.activeInHierarchy)
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }
 

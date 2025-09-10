@@ -84,7 +84,7 @@ public class Gun : MonoBehaviour
         {
             leftFireEffect.FireAnim();
         }
-        GameObject bullet = Instantiate(BulletManager.instance.GetBullet((int)element), bulletPos);
+        GameObject bullet = Instantiate(BulletManager.instance.GetBullet((int)element), bulletPos.position, Quaternion.identity);
 
 
         Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
@@ -132,7 +132,7 @@ public class Gun : MonoBehaviour
             Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
             
             bullet.GetComponent<Bullet>().Init(damage, per, dir);
-            CameraShake.instance.OnShakeCamera(0.25f, 0.05f);
+            CameraController.Instance.Shake(0.05f, 0.05f);
             StartCoroutine(KnockBack());
             yield return new WaitForSeconds(0.2f);
         }

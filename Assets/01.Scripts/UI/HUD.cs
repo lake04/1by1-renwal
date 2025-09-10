@@ -27,8 +27,8 @@ public class HUD : MonoBehaviour
                 mySlider.value = curHp / maxHp;
                 break;
                 case InfoType.Skill:
-                float curTime = Player.Instance.guns[Player.Instance.cureentGun].cooldownTimer; 
-                float maxTime = Player.Instance.guns[Player.Instance.cureentGun].cooldownTime; 
+                float curTime = Player.Instance.guns[Player.Instance.currentGun].cooldownTimer; 
+                float maxTime = Player.Instance.guns[Player.Instance.currentGun].cooldownTime; 
                 mySlider.value = curTime / maxTime;
                 break;
 
