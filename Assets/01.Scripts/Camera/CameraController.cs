@@ -41,6 +41,13 @@ public class CameraController : MonoBehaviour
         }
         cam = Camera.main;
     }
+    private void Update()
+    {
+        if(target ==null)
+        {
+            target = Player.Instance.gameObject.transform;
+        }
+    }
 
     private void FixedUpdate()
     {

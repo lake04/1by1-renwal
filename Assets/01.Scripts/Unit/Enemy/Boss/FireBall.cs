@@ -7,6 +7,7 @@ public class FireBall : MonoBehaviour
 {
     [SerializeField] private float damage;
     [SerializeField] private GameObject effect;
+    private float moveSpeed = 10f;
 
     private Rigidbody2D rb;
 
@@ -26,10 +27,10 @@ public class FireBall : MonoBehaviour
         
     }
 
-    public void Init(float _damage, Vector3 dir)
+    public void Init(float _damage, Vector2 dir)
     {
         damage = _damage;
-        rb.velocity = dir * 4.5f;
+        rb.velocity = dir * moveSpeed;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

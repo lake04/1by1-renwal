@@ -67,7 +67,11 @@ public class Gun : MonoBehaviour
     {
         if (holding == false)
             return;
-        spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX ? false : true;
+        if(gunKind == GunKind.pistol)
+        {
+            spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX ? false : true;
+
+        }
     }
 
     public void Fire()

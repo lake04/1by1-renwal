@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  effect: {fileID: 4814434266568996615, guid: 55f2db5352d5ca544bc467b4c26fa778, type: 3}
+  effect: {fileID: 4814434266568996615, guid: 03bffbbb01f66f34dbfcd312c6931537, type: 3}
 --- !u!50 &4270661617381142346
 Rigidbody2D:
   serializedVersion: 4
