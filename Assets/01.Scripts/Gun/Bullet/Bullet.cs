@@ -49,7 +49,14 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             enemy.ApplyElement(element, damage);
+            per--;
+            if(per<0)
+                Destroy();
 
+        }
+        if (collision.gameObject.CompareTag("Boss"))
+        {
+            collision.gameObject.GetComponent<Gabriel>().TakeDamage(damage);
             Destroy();
         }
     }

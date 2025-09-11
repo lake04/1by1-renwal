@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(Instance);
         }
         else
         {
@@ -147,31 +148,83 @@ public class Player : MonoBehaviour
     }
     #region 이동관련
 
+    //private void Move()
+    //{
+    //    if (!isMove) return;
+
+    //    float x = Input.GetAxisRaw("Horizontal");
+    //    if(x <=0)
+    //    {
+    //        animator.SetInteger("Idle", 0);
+    //    }
+    //    else if (x != 0)
+    //    {
+    //        animator.SetTrigger("Move");
+    //        spriteRenderer.flipX = x < 0;
+
+    //        float targetSpeed = x * moveSpeed;
+    //        float speedDiff = targetSpeed - rb.velocity.x;
+
+    //        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
+
+    //        // Lerp 함수를 사용하여 속도를 목표 속도에 맞추기
+    //        // Time.fixedDeltaTime을 곱하여 FixedUpdate에서 프레임 독립적으로 작동하게 함
+    //        float newVelocityX = Mathf.Lerp(rb.velocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
+    //        rb.velocity = new Vector2(newVelocityX, rb.velocity.y);
+
+    //        // 최대 속도 제한
+    //        if (Mathf.Abs(rb.velocity.x) > maxSpeed)
+    //        {
+    //            rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
+    //        }
+
+    //    }
+
+
+
+    //}
+
+
     private void Move()
     {
         if (!isMove) return;
 
         float x = Input.GetAxisRaw("Horizontal");
+
+        animator.SetFloat("speed", Mathf.Abs(x)); 
         if (x != 0)
             spriteRenderer.flipX = x < 0;
+        if (guns[currentGun].gunKind == GunKind.pistol)
+        {
+            spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX;
+            guns[currentGun].spriteRenderer.flipX = spriteRenderer.flipX ? false : true;
+            guns[currentGun].transform.position = spriteRenderer.flipX
+                ? gunPoss[1].transform.position 
+                : gunPoss[0].transform.position; 
+        }
+        if (guns[currentGun].gunKind == GunKind.rilfe)
+        {
+            spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX;
+            guns[currentGun].spriteRenderer.flipX = spriteRenderer.flipX ? false : true;
+            guns[currentGun].transform.position = spriteRenderer.flipX
+                ? gunPoss[2].transform.position
+                : gunPoss[3].transform.position;
+        }
 
         float targetSpeed = x * moveSpeed;
         float speedDiff = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
 
-        // Lerp 함수를 사용하여 속도를 목표 속도에 맞추기
-        // Time.fixedDeltaTime을 곱하여 FixedUpdate에서 프레임 독립적으로 작동하게 함
         float newVelocityX = Mathf.Lerp(rb.velocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
         rb.velocity = new Vector2(newVelocityX, rb.velocity.y);
 
-        // 최대 속도 제한
         if (Mathf.Abs(rb.velocity.x) > maxSpeed)
         {
             rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
         }
-
     }
+
 
     private void Jump()
     {

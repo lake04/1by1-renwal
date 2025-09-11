@@ -201,11 +201,14 @@ public class BaseEnemy : MonoBehaviour
         float tickInterval = 0.5f;
 
         float timer = 0f;
+
+        StartCoroutine(BurnVisualEffect(burnDuration, tickInterval));
+
         while (timer < burnDuration)
         {
             curHp -= 1; 
             Debug.Log("화상 데미지");
-
+            spriteRenderer.color = Color.red;
             if (curHp <= 0)
             {
                 Destroy(gameObject);
@@ -214,10 +217,29 @@ public class BaseEnemy : MonoBehaviour
 
             yield return new WaitForSeconds(tickInterval);
             timer += tickInterval;
+            spriteRenderer.color = Color.white;
         }
 
         isBurn = false;
         Debug.Log("화상 끝");
+    }
+
+    private IEnumerator BurnVisualEffect(float totalDuration, float tickDuration)
+    {
+        float timer = 0f;
+        while (timer < totalDuration)
+        {
+            spriteRenderer.color = Color.red;
+
+            yield return new WaitForSeconds(0.1f);
+
+            spriteRenderer.color = Color.white;
+
+            yield return new WaitForSeconds(tickDuration - 0.1f);
+            timer += tickDuration;
+        }
+
+        spriteRenderer.color = Color.white;
     }
 
     private IEnumerator Stun()
