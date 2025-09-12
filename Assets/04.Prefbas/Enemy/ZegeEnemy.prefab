@@ -246,6 +246,7 @@ MonoBehaviour:
   target: {fileID: 0}
   invincibleTime: 0.1
   blinkInterval: 0.09
+  isLive: 1
   animator: {fileID: 0}
   attackObject: {fileID: 5755440714924875123}
   leftAttackObjectPos: {fileID: 116843542462276552}

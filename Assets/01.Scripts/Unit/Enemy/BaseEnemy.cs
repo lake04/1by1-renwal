@@ -185,7 +185,7 @@ public class BaseEnemy : MonoBehaviour
             Vector3 playerPos = target.transform.position;
             Vector3 dirVec = (transform.position - playerPos);
             dirVec.y = 0;
-            rb.AddForce(dirVec.normalized * 3f, ForceMode2D.Impulse);
+            rb.AddForce(dirVec.normalized * 3.5f, ForceMode2D.Impulse);
             isMove = false;
             yield return wait;
             isMove = true;
@@ -206,7 +206,8 @@ public class BaseEnemy : MonoBehaviour
 
         while (timer < burnDuration)
         {
-            curHp -= 1; 
+            curHp -= 1;
+            StartCoroutine(InvincibleBlink());
             Debug.Log("화상 데미지");
             spriteRenderer.color = Color.red;
             if (curHp <= 0)
@@ -260,7 +261,7 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void Die()
     {
-        isLive = true;
+        isLive = false;
         Destroy(gameObject);
     }
 

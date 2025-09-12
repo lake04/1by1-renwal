@@ -196,7 +196,7 @@ MonoBehaviour:
   element: 0
   gunKind: 0
   holding: 0
-  damage: 4
+  damage: 9
   per: 0
   attackSpeed: 0.2
   ammo: 1
@@ -211,7 +211,6 @@ MonoBehaviour:
   playerSpriteRenderer: {fileID: 0}
   cooldownTime: 5
   cooldownTimer: 0
-  slider: {fileID: 0}
 --- !u!1 &4974211552622505240
 GameObject:
   m_ObjectHideFlags: 0

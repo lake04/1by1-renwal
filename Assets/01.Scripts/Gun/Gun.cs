@@ -51,10 +51,17 @@ public class Gun : MonoBehaviour
     public float cooldownTimer = 0f;
 
 
-
+    private void OnEnable()
+    {
+        if(spriteRenderer == null)
+        {
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        if(playerSpriteRenderer == null || Player.Instance.spriteRenderer != null)
+        playerSpriteRenderer = Player.Instance.spriteRenderer;
+    }
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()

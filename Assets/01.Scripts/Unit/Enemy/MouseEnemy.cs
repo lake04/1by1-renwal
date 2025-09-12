@@ -39,7 +39,7 @@ public class MouseEnemy : BaseEnemy
 
     public override void Move()
     {
-        if (isMove == false || isAttacking == true)
+        if (isMove == false || isAttacking == true || !isLive)
         {
             return;
         }
@@ -147,7 +147,7 @@ public class MouseEnemy : BaseEnemy
 
     public override void Die()
     {
-        isLive = true;
+        isLive = false;
         animator.SetTrigger("Die");
     }
 

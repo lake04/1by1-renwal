@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class Gabriel : MonoBehaviour
@@ -23,10 +20,12 @@ public class Gabriel : MonoBehaviour
 
     [Header("Skill 1")]
     public GameObject skillEffect2;
+    public GameObject skillMarkEffect2;
     public Transform[] poss;
 
 
     private int skillToUse = 0;
+    private bool isSkill = false;
 
     public GameObject target;
     public Slider hpBar;
@@ -56,7 +55,7 @@ public class Gabriel : MonoBehaviour
             target = Player.Instance.gameObject;
 
         }
-        if (!isSkillReady)
+        if (!isSkillReady && isSkill == false)
         {
             currentSkillCoolTime -= Time.deltaTime;
             if (currentSkillCoolTime <= 0)
@@ -66,7 +65,7 @@ public class Gabriel : MonoBehaviour
         }
 
         float distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
-        if (distanceToTarget < 10f && isSkillReady)
+        if (distanceToTarget < 20f && isSkillReady && isSkill == false)
         {
             ChooseAndUseSkill();
         }
@@ -176,6 +175,11 @@ public class Gabriel : MonoBehaviour
     private void Die()
     {
         Debug.Log("보스 죽음");
+        animator.SetTrigger("Die");
+    }
+    public void OnDie()
+    {
+        Destroy(gameObject);
     }
 
     private void UpdateHp()
@@ -183,6 +187,7 @@ public class Gabriel : MonoBehaviour
         hpBar.value = curHp / maxHp;
     }
 
+    #region 스킬
     private void ChooseAndUseSkill()
     {
         if (isSkillReady)
@@ -195,16 +200,20 @@ public class Gabriel : MonoBehaviour
                 case 1:
                     StartCoroutine(Skill2());
                     break;
+                case 2:
+                    StartCoroutine(Skill3());
+                    break;
             }
 
             isSkillReady = false;
             currentSkillCoolTime = skillCoolTime;
 
-            skillToUse = (skillToUse + 1) % 2;
+            skillToUse = Random.Range(0,3);
         }
     }
     private IEnumerator Skill1()
     {
+        isSkill = true;
         Vector2 spawnPos = new Vector2(target.transform.position.x, target.transform.position.y);
 
         GameObject mark = Instantiate(skillMarkEffect1, new Vector3(spawnPos.x, spawnPos.y - 0.5f, 0), Quaternion.identity);
@@ -213,26 +222,64 @@ public class Gabriel : MonoBehaviour
 
         Destroy(mark);
         GameObject skill = Instantiate(skillEffect1, new Vector3(spawnPos.x, spawnPos.y, 0), Quaternion.identity);
-
+        isSkill = false;
     }
 
     private IEnumerator Skill2()
     {
+        isSkill = true;
         int num = Random.Range(0, poss.Length); 
 
-        GameObject mark = Instantiate(skillMarkEffect1, poss[num]);
+        GameObject mark = Instantiate(skillMarkEffect2, poss[num]); 
+        Vector2 playerPos = target.transform.position;
+
+        Vector2 dir = (playerPos - (Vector2)poss[num].position).normalized;
 
         yield return new WaitForSeconds(0.3f);
 
         Destroy(mark);
-
-
         GameObject skill = Instantiate(skillEffect2, poss[num].position, Quaternion.identity);
 
-        Vector2 dir = (target.transform.position - skill.transform.position).normalized;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        skill.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        Rigidbody2D rb = skill.GetComponent<Rigidbody2D>();
+        rb.velocity = dir * 15f;
 
         skill.GetComponent<FireBall>().Init(damage, dir);
+
+        isSkill = false;
     }
+
+    private IEnumerator Skill3()
+    {
+        isSkill = true;
+        for (int i = 0; i < poss.Length; i++)
+        {
+            GameObject mark = Instantiate(skillMarkEffect2, poss[i]);
+
+            yield return new WaitForSeconds(0.13f);
+
+            Destroy(mark);
+
+            Vector2 playerPos = target.transform.position;
+
+            Vector2 dir = (playerPos - (Vector2)poss[i].position).normalized;
+
+            GameObject skill = Instantiate(skillEffect2, poss[i].position, Quaternion.identity);
+
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            skill.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            Rigidbody2D rb = skill.GetComponent<Rigidbody2D>();
+            rb.velocity = dir * 15f;
+
+            skill.GetComponent<FireBall>().Init(damage, dir);
+        }
+        isSkill = false;
+    }
+
+    #endregion
 
     private void SetUp()
     {

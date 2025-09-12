@@ -13,7 +13,7 @@ public class AutoReturnEffect : MonoBehaviour
         Invoke(nameof(ReturnToPool), lifeTime);
     }
 
-    void ReturnToPool()
+   protected  virtual void ReturnToPool()
     {
         Destroy(gameObject);
     }

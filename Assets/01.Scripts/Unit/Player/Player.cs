@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public bool isMove = true;
     public bool isKonBack = false;
 
+    private float x;
+
     [Header("Jump")]
     [SerializeField] private float jumpPower = 6f;       // 점프 초기 속도
     [SerializeField] private float fallMultiplier = 3f;  // 하강 속도 배율 (낙하 속도 빠르게)
@@ -29,6 +31,8 @@ public class Player : MonoBehaviour
     [Header("Setting")]
     [SerializeField] private float curHp;
     [SerializeField] private float maxHp;
+    [SerializeField] public GameObject playerHitEettct;
+
 
     public float invincibleTime = 1.5f;     // 무적 유지 시간
     public float blinkInterval = 0.6f;    // 깜빡임 간격
@@ -38,6 +42,7 @@ public class Player : MonoBehaviour
 
     [Header("Gun")]
     public List<Gun> guns = new List<Gun>(2);
+    public List<GameObject> gunObjects = new List<GameObject>(2);
     public Transform PistolSkillPos;
     private bool isAttack = true;
     private float time;
@@ -56,10 +61,23 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Image> noSelectSlots;
     [SerializeField] private List<GameObject> slectSlotObs;
     [SerializeField] private List<GameObject> slotObs;
+    
+    [Header("Dash")]
+    [SerializeField] private Ghost ghost;
+    [SerializeField] private float dashPower = 5f;     // 대쉬 속도 배율 (moveSpeed * dashPower)
+    [SerializeField] private float dashDuration = 0.3f; // 대쉬 유지 시간
+
+    [SerializeField]  private float dashCooldown;   
+    private bool isDashing;                               // 지금 대쉬 중인지 여부
+    [SerializeField]  private bool canDash = true;
+
+    private Vector2 dir;
 
     public Rigidbody2D rb;
     public SpriteRenderer spriteRenderer;
     private Animator animator;
+
+    [SerializeField] public GameObject canvas;
 
     [SerializeField] private CameraController followCamaer;
 
@@ -72,6 +90,7 @@ public class Player : MonoBehaviour
         if(Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(canvas);
             DontDestroyOnLoad(Instance);
         }
         else
@@ -96,6 +115,7 @@ public class Player : MonoBehaviour
             slots[currentGun].sprite = guns[currentGun].spriteRenderer.sprite;
             slots[currentGun].enabled = true;
         }
+        SettingGun();
     }
 
     // Update is called once per frame
@@ -106,7 +126,7 @@ public class Player : MonoBehaviour
         {
             StartCoroutine(Attack());
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Z))
             jumpBufferCounter = jumpBufferTime;
         else
             jumpBufferCounter -= Time.deltaTime;
@@ -121,10 +141,7 @@ public class Player : MonoBehaviour
             }
             guns[currentGun].Skill();
         }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            DropGun();
-        }
+      
         if (canPickUpGun && Input.GetKeyDown(KeyCode.F))
         {
             PickGun(nearbyGun);
@@ -138,8 +155,20 @@ public class Player : MonoBehaviour
                 ChageSlot(i-1);
             }
         }
+        if (Input.GetKeyDown(KeyCode.LeftControl) && canDash)
+        {
+            StartCoroutine (Dash());
+        }
+
         UpdateCooldowns();
+    
+
+        animator.SetFloat("speed", Mathf.Abs(rb.velocity.x));
+
+        // isMoving 파라미터는 x가 0이 아닐 때만 true로 설정
+        animator.SetBool("isMoving", x != 0);
     }
+    
 
     private void FixedUpdate()
     {
@@ -148,59 +177,29 @@ public class Player : MonoBehaviour
     }
     #region 이동관련
 
-    //private void Move()
-    //{
-    //    if (!isMove) return;
-
-    //    float x = Input.GetAxisRaw("Horizontal");
-    //    if(x <=0)
-    //    {
-    //        animator.SetInteger("Idle", 0);
-    //    }
-    //    else if (x != 0)
-    //    {
-    //        animator.SetTrigger("Move");
-    //        spriteRenderer.flipX = x < 0;
-
-    //        float targetSpeed = x * moveSpeed;
-    //        float speedDiff = targetSpeed - rb.velocity.x;
-
-    //        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : decceleration;
-
-    //        // Lerp 함수를 사용하여 속도를 목표 속도에 맞추기
-    //        // Time.fixedDeltaTime을 곱하여 FixedUpdate에서 프레임 독립적으로 작동하게 함
-    //        float newVelocityX = Mathf.Lerp(rb.velocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
-    //        rb.velocity = new Vector2(newVelocityX, rb.velocity.y);
-
-    //        // 최대 속도 제한
-    //        if (Mathf.Abs(rb.velocity.x) > maxSpeed)
-    //        {
-    //            rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
-    //        }
-
-    //    }
-
-
-
-    //}
-
-
     private void Move()
     {
         if (!isMove) return;
 
-        float x = Input.GetAxisRaw("Horizontal");
+      x = Input.GetAxisRaw("Horizontal");
 
-        animator.SetFloat("speed", Mathf.Abs(x)); 
+        // 캐릭터의 실제 속도(rb.velocity.x)를 사용하여 애니메이션 제어
+
+
+        // 방향 전환 로직은 그대로 둡니다.
         if (x != 0)
             spriteRenderer.flipX = x < 0;
+
+        // ... (이하 코드는 동일)
         if (guns[currentGun].gunKind == GunKind.pistol)
         {
             spriteRenderer.flipX = Player.Instance.spriteRenderer.flipX;
             guns[currentGun].spriteRenderer.flipX = spriteRenderer.flipX ? false : true;
             guns[currentGun].transform.position = spriteRenderer.flipX
-                ? gunPoss[1].transform.position 
-                : gunPoss[0].transform.position; 
+                ? gunPoss[1].transform.position
+                : gunPoss[0].transform.position;
+            animator.SetBool("isPistol", true);
+            animator.SetBool("isRife", false);
         }
         if (guns[currentGun].gunKind == GunKind.rilfe)
         {
@@ -208,7 +207,9 @@ public class Player : MonoBehaviour
             guns[currentGun].spriteRenderer.flipX = spriteRenderer.flipX ? false : true;
             guns[currentGun].transform.position = spriteRenderer.flipX
                 ? gunPoss[2].transform.position
-                : gunPoss[3].transform.position;
+                : gunPoss[3].transform.position; 
+                animator.SetBool("isRife", true);
+             animator.SetBool("isPistol", false);
         }
 
         float targetSpeed = x * moveSpeed;
@@ -222,7 +223,9 @@ public class Player : MonoBehaviour
         if (Mathf.Abs(rb.velocity.x) > maxSpeed)
         {
             rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
+            dir = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
         }
+     
     }
 
 
@@ -234,14 +237,6 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             jumpBufferCounter = 0f;
         }
-
-        //// 점프 키를 떼면 점프를 끊는 기능 (점프 높이 조절)
-        //// 이 로직을 사용하면 점프 키를 짧게 누르면 낮게, 길게 누르면 높게 점프 가능
-        //if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        //{
-        //    // Vector2.up * Physics2D.gravity.y * 1.5f 같은 값으로 부드럽게 속도 줄이기
-        //    rb.velocity += Vector2.up * Physics2D.gravity.y * 1.5f * Time.deltaTime;
-        //}
 
         // 상승 속도 배율
         else if (rb.velocity.y > 0)
@@ -255,6 +250,36 @@ public class Player : MonoBehaviour
         }
 
     }
+
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        this.ghost.makeGhost = true;
+        isMove = false;
+
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // 방향 처리
+        Vector2 dir = spriteRenderer.flipX ?  Vector2.left : Vector2.right;
+        //rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
+        rb.velocity = new Vector2(dir.x * dashPower, 0f);
+
+        // 대쉬 유지
+        yield return new WaitForSeconds(dashDuration);
+
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        this.ghost.makeGhost = false;
+        isMove = true;
+        // 쿨다운
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+    }
+
+
 
     #endregion
 
@@ -271,14 +296,12 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(time);
         isAttack = true;
 
-
     }
 
     public void StartCooldown(Gun gun)
     {
         if (gun != null)
         {
-            // 딕셔너리에 쿨타임 정보 추가 또는 업데이트
             gunCooldowns[gun] = gun.cooldownTime;
         }
     }
@@ -310,6 +333,7 @@ public class Player : MonoBehaviour
             return;
         }
         curHp -= damage;
+        GameObject effect = Instantiate(playerHitEettct,gameObject.transform);
         StartCoroutine(HitEffect());
         StartCoroutine(InvincibleBlink());
         Debug.Log("피격 당함");
@@ -397,6 +421,7 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
+        CircleEffect.Instance.LoadScene("Title");
         Debug.Log("플레이어 죽음");
     }
 
@@ -405,6 +430,11 @@ public class Player : MonoBehaviour
         if (_n < 0 || _n >= guns.Count) return;
         if (_n == currentGun) return;
 
+        if (guns[currentGun] != null)
+        {
+            gunObjects[currentGun].SetActive(false);
+
+        }
         if (guns[currentGun] != null)
         {
             guns[currentGun].gameObject.SetActive(false);
@@ -416,20 +446,45 @@ public class Player : MonoBehaviour
         currentGun = _n;
         if (guns[currentGun] != null)
         {
-            curGun = guns[currentGun].gameObject;
+            Gun gun = guns[currentGun];
+
+            gunObjects[currentGun].SetActive(true);
+
+            if (gun.PistolSkillPos == null)
+            {
+                gun.PistolSkillPos = PistolSkillPos;
+            }
+            if (gun.gunKind == GunKind.pistol)
+            {
+                RectTransform rect = (RectTransform)slots[currentGun].transform;
+                rect.sizeDelta = new Vector2(80f, 80f);
+            }
+            else if (gun.gunKind == GunKind.rilfe)
+            {
+                RectTransform rect = (RectTransform)slots[currentGun].transform;
+                rect.sizeDelta = new Vector2(200f, 200f);
+            }
+            Collider2D col = gun.GetComponent<Collider2D>();
+            if (col != null)
+            {
+                col.enabled = false;
+                col.isTrigger = true;
+            }
+
+            curGun = gun.gameObject;
             curGun.SetActive(true);
             curGun.transform.SetParent(gameObject.transform);
             curGun.transform.position = gunPoss[0].transform.position;
 
-            guns[currentGun].holding = true;
-            slots[currentGun].sprite = guns[currentGun].spriteRenderer.sprite;
+            gun.holding = true;
+        
+            slots[currentGun].sprite = gun.spriteRenderer.sprite;
             slots[currentGun].enabled = true;
             slectSlotObs[currentGun].gameObject.SetActive(true);
             slotObs[currentGun].gameObject.SetActive(false);
+           
         }
     }
-
-
 
 
     private void DropGun()
@@ -437,35 +492,40 @@ public class Player : MonoBehaviour
         if (guns[currentGun] == null) return;
 
         Gun droppedGun = guns[currentGun];
+        GameObject droppedObject = gunObjects[currentGun];
+
         droppedGun.holding = false;
 
+        // 슬롯 UI를 비활성화합니다.
         slots[currentGun].enabled = false;
         slectSlotObs[currentGun].SetActive(false);
         slotObs[currentGun].SetActive(true);
 
-        droppedGun.transform.SetParent(null);
-        droppedGun.transform.position = transform.position + new Vector3(
+        // 부모를 null로 설정하여 총을 플레이어에게서 분리합니다.
+        droppedObject.transform.SetParent(null);
+        droppedObject.transform.position = transform.position + new Vector3(
             1f * (spriteRenderer.flipX ? -1 : 1), 0.5f, 0);
 
-        // Rigidbody 복원
-        Rigidbody2D rb = droppedGun.GetComponent<Rigidbody2D>();
-        if (rb == null) rb = droppedGun.gameObject.AddComponent<Rigidbody2D>();
+        // 물리 기능을 다시 활성화합니다.
+        Rigidbody2D rb = droppedObject.GetComponent<Rigidbody2D>();
+        if (rb == null) rb = droppedObject.gameObject.AddComponent<Rigidbody2D>();
         rb.isKinematic = false;
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0f;
         rb.gravityScale = 2f;
         rb.AddForce(new Vector2(spriteRenderer.flipX ? -2f : 2f, 3f), ForceMode2D.Impulse);
 
-        // Collider 복원
-        Collider2D col = droppedGun.GetComponent<Collider2D>();
+        // 콜라이더를 다시 활성화합니다.
+        Collider2D col = droppedObject.GetComponent<Collider2D>();
         if (col != null)
         {
             col.enabled = true;
-            col.isTrigger = false; 
+            col.isTrigger = false;
         }
 
+        // 플레이어 인벤토리에서 총을 제거합니다.
         guns[currentGun] = null;
+        gunObjects[currentGun] = null;
         curGun = null;
+       
     }
 
 
@@ -507,7 +567,37 @@ public class Player : MonoBehaviour
         slectSlotObs[currentGun].SetActive(true);
         slotObs[currentGun].SetActive(false);
 
-        Debug.Log($"총 획득: 슬롯 {currentGun}");
+        if (emptySlot == -1)
+        {
+            DropGun();
+            emptySlot = currentGun;
+        }
+
+        // 새 총을 슬롯에 할당합니다.
+        guns[emptySlot] = _gun;
+        currentGun = emptySlot;
+
+        // GameObject를 가져와서 영구적으로 만듭니다.
+        GameObject gunObject = _gun.gameObject;
+        gunObjects[emptySlot] = gunObject; // GameObject 참조를 저장합니다.
+
+        // 총의 부모를 플레이어로 설정하고 물리 관련 컴포넌트를 비활성화합니다.
+        gunObject.transform.SetParent(gunPoss[0].transform);
+        gunObject.transform.localPosition = Vector3.zero;
+        gunObject.transform.localRotation = Quaternion.identity;
+        _gun.holding = true;
+
+        // **이 부분이 핵심입니다.** 주운 총 오브젝트를 영구적으로 유지합니다.
+        DontDestroyOnLoad(gunObject);
+
+    }
+
+    private void SettingGun()
+    {
+        foreach(var  gun in gunObjects)
+        {
+            DontDestroyOnLoad(gun);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

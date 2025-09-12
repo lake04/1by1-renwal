@@ -38,6 +38,15 @@ public class PlayerSpawn : MonoBehaviour
             Player.Instance.gameObject.transform.position =  spawnPos.transform.position;
             isSpawn = false;
 
+
+            if (Player.Instance != null)
+            {
+                Player.Instance.enabled = true;
+                Player.Instance.gameObject.SetActive(true);
+                Player.Instance.canvas.SetActive(true);
+                Debug.Log("활성화중중");
+            }
         }
+
     }
 }

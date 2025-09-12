@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] GameObject effect;
 
     private Vector3 startPos;
-    private float maxDistanc = 20f;
+    private float maxDistanc = 15f;
 
     private Rigidbody2D rb;
 
@@ -40,7 +40,7 @@ public class Bullet : MonoBehaviour
     {
         damage = _damage;
         per = _per;
-        rb.velocity = dir * 40;
+        rb.velocity = dir * 80;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

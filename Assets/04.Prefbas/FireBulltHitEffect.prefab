@@ -258,7 +258,7 @@ ParticleSystem:
       minGradient:
         serializedVersion: 2
         key0: {r: 0.99607843, g: 0.28254953, b: 0.08627453, a: 1}
-        key1: {r: 0.7686275, g: 0.7686275, b: 0.7686275, a: 1}
+        key1: {r: 1, g: 0.18396229, b: 0.18396229, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}

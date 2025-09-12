@@ -106,7 +106,7 @@ MonoBehaviour:
   element: 1
   gunKind: 0
   holding: 0
-  damage: 4
+  damage: 6
   per: 0
   attackSpeed: 0.2
   ammo: 1
@@ -150,13 +150,13 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.36630043, y: 0.1273044}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.8971167, y: 0.370801}
     oldSize: {x: 1.2, y: 1.2}
     newSize: {x: 0.8, y: 0.8}
     adaptiveTilingThreshold: 0.5

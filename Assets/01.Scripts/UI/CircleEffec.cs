@@ -12,16 +12,25 @@ public class CircleEffect : MonoBehaviour
 
     private Coroutine routine;
 
+    [SerializeField] private bool isStage = false;
+
     private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        if(!isStage)
+            Effect(0, 1, 0.7f);
     }
 
     public void Effect(float start, float end, float time, Action OnEnd = default)
@@ -41,8 +50,12 @@ public class CircleEffect : MonoBehaviour
 
             circle.transform.localScale = Vector3.one * end;
             OnEnd?.Invoke();
+            if (Player.Instance != null)
+            {
+                Player.Instance.enabled = true;
+                Player.Instance.canvas.SetActive(true);
+            }
         }
-
     }
 
     public void LoadScene(string name)
@@ -51,9 +64,7 @@ public class CircleEffect : MonoBehaviour
         {
             LoadingManager.Load(name);
             Effect(0, 1, 0.5f);
+
         });
     }
-
-
 }
-
